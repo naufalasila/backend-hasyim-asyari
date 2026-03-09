@@ -66,5 +66,23 @@ func Setup(db *sql.DB) http.Handler {
 		}
 	})))
 
+	// === Guru (Tim Pengajar) Routes ===
+	// Public route for getting guru by jenjang
+	mux.HandleFunc("/api/guru", controllers.GetGuru(db))
+
+	// Admin protected routes for guru
+	mux.Handle("/api/admin/guru", middleware.Auth(middleware.Role("admin")(func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			controllers.CreateGuru(db)(w, r)
+		case http.MethodPut:
+			controllers.UpdateGuru(db)(w, r)
+		case http.MethodDelete:
+			controllers.DeleteGuru(db)(w, r)
+		default:
+			controllers.GetGuru(db)(w, r)
+		}
+	})))
+
 	return mux
 }
