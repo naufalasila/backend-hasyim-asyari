@@ -84,5 +84,21 @@ func Setup(db *sql.DB) http.Handler {
 		}
 	})))
 
+	// === Album Routes ===
+	// Public route for getting album
+	mux.HandleFunc("/api/album", controllers.GetAlbums(db))
+
+	// Admin protected routes for album
+	mux.Handle("/api/admin/album", middleware.Auth(middleware.Role("admin")(func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			controllers.CreateAlbum(db)(w, r)
+		case http.MethodDelete:
+			controllers.DeleteAlbum(db)(w, r)
+		default:
+			controllers.GetAlbums(db)(w, r)
+		}
+	})))
+
 	return mux
 }

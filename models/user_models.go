@@ -39,3 +39,12 @@ type Pendaftar struct {
 	Status        string    `json:"status"`
 	CreatedAt     time.Time `json:"created_at"`
 }
+
+// Album represents the album table for gallery
+type Album struct {
+	ID        int       `json:"id"`
+	Judul     string    `json:"judul"`
+	Gambar    string    `json:"gambar"`
+	Kategori  string    `json:"kategori"`
+	CreatedAt time.Time `json:"created_at"`
+}

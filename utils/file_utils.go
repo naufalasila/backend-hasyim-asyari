@@ -15,6 +15,7 @@ const ProfilePhotoPath = "uploads/profile"
 const DokumenPendaftarPath = "uploads/dokumen_pendaftar"
 const BeritaImagePath = "uploads/berita"
 const GuruImagePath = "uploads/guru"
+const AlbumImagePath = "uploads/album"
 
 func UploadFoto(file multipart.File, header *multipart.FileHeader, uploadDir string) (string, error) {
 	defer file.Close()
