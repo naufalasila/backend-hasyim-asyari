@@ -100,5 +100,33 @@ func Setup(db *sql.DB) http.Handler {
 		}
 	})))
 
+	// === Pembina (Penanggung Jawab) Routes ===
+	mux.HandleFunc("/api/pembina", controllers.GetPembina(db))
+
+	mux.Handle("/api/admin/pembina", middleware.Auth(middleware.Role("admin")(func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			controllers.CreatePembina(db)(w, r)
+		case http.MethodPut:
+			controllers.UpdatePembina(db)(w, r)
+		case http.MethodDelete:
+			controllers.DeletePembina(db)(w, r)
+		default:
+			controllers.GetPembina(db)(w, r)
+		}
+	})))
+
+	// === Brosur Routes ===
+	mux.HandleFunc("/api/brosur", controllers.GetBrosur(db))
+
+	mux.Handle("/api/admin/brosur", middleware.Auth(middleware.Role("admin")(func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			controllers.UploadBrosur(db)(w, r)
+		default:
+			controllers.GetBrosur(db)(w, r)
+		}
+	})))
+
 	return mux
 }
